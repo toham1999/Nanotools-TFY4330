@@ -1,0 +1,28 @@
+// Størrelse på hver simuleringspunkt, 5e-9 er 5 nanometer som er passe for permalloy. (x, y, z)
+SetCellsize(5e-9,5e-9,20e-9)
+
+// Antall simuleringspunkter (x, y, z). Total størrelse er CellSize * GridSize.
+// Så CellSize (5e-9, 5e-9, 20e-9) og GridSize (500, 500, 1),
+// gir simulering størrelse (2.5 um, 2.5 um, 20 nm).
+SetGridsize(512,512,1)
+
+Msat  = 860e3	// Saturation Magnetization, Msat (A/m)
+Aex   = 13e-12	// Exchange Stiffness, A (pm)
+alpha = 0.01	// Dampening Constant, alpha
+
+// Navn på bildefilen til strukturen du skal simulere.
+// Svarte område: magnetisk. Hvitt område: ikke-magnetisk.
+setgeom(imageShape("vortex.png"))
+saveas(geom,"geometry") // Lagre bilde av strukturen
+
+m = Vortex(1, -1) // Sette initialbetingelser
+
+saveas(m,"magnetization0") // Lagre bildet av magnetiske strukturen
+relax() // Relaksere stukturen
+saveas(m,"magnetization1") // Lagre bildet av magnetiske strukturen
+B_ext = vector(5.0e-3, 0, 0)
+relax() // Relaksere stukturen
+saveas(m,"magnetization2") // Lagre bildet av magnetiske strukturen
+B_ext = vector(0, 5.0e-3, 0)
+relax() // Relaksere stukturen
+saveas(m,"magnetization3") // Lagre bildet av magnetiske strukturen

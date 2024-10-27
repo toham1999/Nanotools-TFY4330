@@ -1,0 +1,44 @@
+//mumax 3.10 [linux_amd64 go1.14(gc) CUDA-11.0]
+//GPU info: Tesla P100-PCIE-16GB(16269MB), CUDA Driver 12.5, cc=6.0, using cc=60 PTX
+//(c) Arne Vansteenkiste, Dynamat LAB, Ghent University, Belgium
+//This is free software without any warranty. See license.txt
+//********************************************************************//
+//  If you use mumax in any work or publication,                      //
+//  we kindly ask you to cite the references in references.bib        //
+//********************************************************************//
+//output directory: run.out/
+//starting GUI at http://127.0.0.1:35367
+SetCellsize(5e-9, 5e-9, 20e-9)
+SetGridsize(512, 512, 1)
+Msat = 860e3
+Aex = 13e-12
+alpha = 0.01
+setgeom(imageShape("nanomagnet_matrise.png"))
+// Initializing geometry 0 %
+// Initializing geometry 100 %
+saveas(geom, "geometry")
+m = uniform(1, .1, 0)
+relax()
+//Did not use cached kernel: open /tmp/mumax3kernel_[512 512 1]_[0 0 0]_[5e-09 5e-09 2e-08]_6_0 0.ovf: no such file or directory
+//Cached kernel: /tmp/mumax3kernel_[512 512 1]_[0 0 0]_[5e-09 5e-09 2e-08]_6_
+saveas(m, "magnetization")
+MFMLift = 20e-9
+//Did not use cached kernel: open /tmp/mumax3MFMkernel_[512 512 1]_[0 0 0]_[5e-09 5e-09 2e-08]_2e-08_0.001_0.ovf: no such file or directory
+calculating MFM kernel
+// Calculating MFM kernel 0 %
+// Calculating MFM kernel 94 %
+// Calculating MFM kernel 100 %
+//Cached kernel: /tmp/mumax3MFMkernel_[512 512 1]_[0 0 0]_[5e-09 5e-09 2e-08]_2e-08_0.001_
+saveas(MFM, "lift_20nm")
+//********************************************************************//
+//Please cite the following references, relevant for your simulation. //
+//See bibtex file in output folder for justification.                 //
+//********************************************************************//
+//   * Vansteenkiste et al., AIP Adv. 4, 107133 (2014).
+run.out/geometry.ovf
+run.out/lift_20nm.ovf
+run.out/magnetization.ovf
+[ ok ] run.out/geometry.ovf	-> run.out/geometry.png
+[ ok ] run.out/lift_20nm.ovf	-> run.out/lift_20nm.png
+[ ok ] run.out/magnetization.ovf	-> run.out/magnetization.png
+3 files converted,  0 skipped,  0 failed

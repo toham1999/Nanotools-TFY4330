@@ -1,0 +1,77 @@
+// Størrelse på hver simuleringspunkt, 5e-9 er 5 nanometer som er passe for permalloy. (x, y, z)
+SetCellsize(5e-9,5e-9,20e-9)
+
+// Antall simuleringspunkter (x, y, z). Total størrelse er CellSize * GridSize.
+// Så CellSize (5e-9, 5e-9, 20e-9) og GridSize (500, 500, 1),
+// gir simulering størrelse (2.5 um, 2.5 um, 20 nm).
+SetGridsize(512,512,1)
+
+Msat  = 860e3	// Saturation Magnetization, Msat (A/m)
+Aex   = 13e-12	// Exchange Stiffness, A (pm)
+alpha = 0.01	// Dampening Constant, alpha
+
+// Navn på bildefilen til strukturen du skal simulere.
+// Svarte område: magnetisk. Hvitt område: ikke-magnetisk.
+setgeom(imageShape("adjusted_A.png"))
+saveas(geom,"geometry") // Lagre bilde av strukturen
+
+
+// Initialbetingelser
+m = randommag() // Tilfeldig magnetisering
+saveas(m,"magnetization0") // Lagre bildet av den initielle magnetiske strukturen
+
+// Magnetfelt i Nord (y-retning)
+B_ext = vector(0, 1, 0)  // Magnetfelt mot Nord
+print("Setter magnetfelt i Nord-retning")
+
+// Initialbetingelser
+m = randommag() // Tilfeldig magnetisering
+saveas(m,"magnetization0") // Lagre bildet av den initielle magnetiske strukturen
+
+// Magnetfelt i Nord (y-retning)
+B_ext = vector(0, 1, 0)  // Magnetfelt mot Nord
+print("Setter magnetfelt i Nord-retning")
+
+// Tilt i Nord-retning
+// Tilt angles for North: 0, -10, -20, -30, -40, 10, 20, 30, 40
+for angle := -40; angle <= 40; angle += 10 {
+    B_ext = vector(0, cos(angle * pi / 180), sin(angle * pi / 180)) // Radians conversion
+    relax()
+    saveas(m, "magnetization_North_tilt_" + angle) // Save each tilt
+}
+
+// Magnetfelt i Sør (y-retning)
+B_ext = vector(0, -1, 0)  // Magnetfelt mot Sør
+print("Setter magnetfelt i Sør-retning")
+
+// Tilt i Sør-retning
+// Tilt angles for South: 0, -10, -20, -30, -40, 10, 20, 30, 40
+for angle := -40; angle <= 40; angle += 10 {
+    B_ext = vector(0, cos(angle * pi / 180), sin(angle * pi / 180)) // Radians conversion
+    relax()
+    saveas(m, "magnetization_South_tilt_" + angle) // Save each tilt
+}
+
+// Magnetfelt i Øst (x-retning)
+B_ext = vector(1, 0, 0)  // Magnetfelt mot Øst
+print("Setter magnetfelt i Øst-retning")
+
+// Tilt i Øst-retning
+// Tilt angles for East: 0, -10, -20, -30, -40, 10, 20, 30, 40
+for angle := -40; angle <= 40; angle += 10 {
+    B_ext = vector(cos(angle * pi / 180), 0, sin(angle * pi / 180)) // Radians conversion
+    relax()
+    saveas(m, "magnetization_East_tilt_" + angle) // Save each tilt
+}
+
+// Magnetfelt i Vest (x-retning)
+B_ext = vector(-1, 0, 0)  // Magnetfelt mot Vest
+print("Setter magnetfelt i Vest-retning")
+
+// Tilt i Vest-retning
+// Tilt angles for West: 0, -10, -20, -30, -40, 10, 20, 30, 40
+for angle := -40; angle <= 40; angle += 10 {
+    B_ext = vector(cos(angle * pi / 180), 0, sin(angle * pi / 180)) // Radians conversion
+    relax()
+    saveas(m, "magnetization_West_tilt_" + angle) // Save each tilt
+}
