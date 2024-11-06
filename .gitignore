@@ -22,6 +22,7 @@
 *.avi
 *.hspy
 *.zspy
+*.spm
 
 # Logs and databases #
 ######################
@@ -43,3 +44,5 @@ Thumbs.db
 ###################
 Dataøving_3_TEM/My_data
 Dataøving_3_TEM/dataøving_3_tem_eks/datasett
+Dataøving_5_AFM/
+Example code/
